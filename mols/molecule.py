@@ -21,6 +21,15 @@ from myrdkit import CalcMolFormula, CalcExactMolWt
 import igraph
 import networkx as nx
 
+BOND_TYPE = [0, Chem.rdchem.BondType.SINGLE, Chem.rdchem.BondType.DOUBLE, Chem.rdchem.BondType.TRIPLE, Chem.rdchem.BondType.AROMATIC] 
+BOND_FLOAT_TO_TYPE = {
+    0.0: BOND_TYPE[0],
+    1.0: BOND_TYPE[1],
+    2.0: BOND_TYPE[2],
+    3.0: BOND_TYPE[3],
+    1.5: BOND_TYPE[4],
+}
+
 
 class Molecule(object):
     """
@@ -158,6 +167,8 @@ def smile_synpath_to_mols(root_mol: Molecule, synpath: dict or str):
     return root_mol
 
 
+# Converters between rdkit molecules and networkx / igraph graphs -----------------------------------------
+
 def mol2graph_igraph(mol, set_bond_properties=True):
     """
     Convert molecule to nx.Graph
@@ -205,6 +216,19 @@ def mol2graph_networkx(mol, set_bond_properties=False):
             # print(bd, m1.GetBondBetweenAtoms(bd[0], bd[1]).GetBondTypeAsDouble())
     return graph
 
+
+def graph2mol_igraph(graph): 
+    emol = Chem.rdchem.RWMol()
+    for v in graph.vs():
+        label = "AtomicNum"
+        emol.AddAtom(Chem.Atom(int(v[label])))
+    for e in graph.es():
+        label = "BondType"
+        emol.AddBond(e.source, e.target, BOND_FLOAT_TO_TYPE[e[label]])
+    mol = emol.GetMol()
+    return mol
+
+# Reactions ---------------------------------------------------------------------------
 
 class Reaction(object):
     def __init__(self, inputs, products=None, conditions=None):
