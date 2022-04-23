@@ -1,0 +1,8 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+src/chembo.egg-info/PKG-INFO
+src/chembo.egg-info/SOURCES.txt
+src/chembo.egg-info/dependency_links.txt
+src/chembo.egg-info/top_level.txt
