@@ -10,6 +10,11 @@ NOTE:
   as loaders.py (which contains the Sampler and dataset getters it uses)
 """
 
+import os
+print(os.getcwd())
+import sys
+print(sys.path)
+
 from myrdkit import *  # :(
 
 from argparse import Namespace, ArgumentParser
@@ -25,9 +30,9 @@ from dragonfly.exd.worker_manager import SyntheticWorkerManager
 from dragonfly.utils.reporters import get_reporter
 
 # a few local imports here
-from chemist_opt.chemist import Chemist
-from mols.mol_functions import get_objective_by_name
-from mols.visualize import visualize_mol
+from ..chemist_opt.chemist import Chemist
+from ..mols.mol_functions import get_objective_by_name
+from ..mols.visualize import visualize_mol
 
 # Where to store temporary model checkpoints
 EXP_PREFIX = "sum_kernel"
